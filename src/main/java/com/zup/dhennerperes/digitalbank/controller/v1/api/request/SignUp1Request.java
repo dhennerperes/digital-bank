@@ -20,26 +20,26 @@ import java.time.LocalDate;
 @Accessors(chain = true)
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class SignUpRequest {
+public class SignUp1Request {
 
-    @NotEmpty(message = "signup.name.empty")
+    @NotEmpty(message = "signup1.name.empty")
     private String name;
 
-    @NotEmpty(message = "signup.last_name.empty")
+    @NotEmpty(message = "signup1.last_name.empty")
     private String last_name;
 
     @NotEmpty(message = "signup.email.empty")//TODO: validar a necessidade
-    @Email(message = "signup.email.invalid")
+    @Email(message = "signup1.email.invalid")
     private String email;
 
-    @NotNull(message = "signup.birth_date.empty")
-    @Past(message = "signup.birth_date.invalid")
+    @NotNull(message = "signup1.birth_date.empty")
+    @Past(message = "signup1.birth_date.invalid")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     //TODO: validar maioridade
     private LocalDate birth_date;
 
-    @NotEmpty(message = "signup.cpf.empty")//TODO: validar a necessidade
-    @CPF(message = "signup.cpf.invalid")
+    @NotEmpty(message = "signup1.cpf.empty")//TODO: validar a necessidade
+    @CPF(message = "signup1.cpf.invalid")
     private String cpf;
 
     public Persona convertToEntity() {

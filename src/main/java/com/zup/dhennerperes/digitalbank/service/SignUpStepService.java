@@ -6,8 +6,12 @@ import java.util.Optional;
 
 public interface SignUpStepService {
 
+    SignUpStep save(SignUpStep signUpStep);
+
     SignUpStep save1(SignUpStep signUpStep);
 
     Optional<SignUpStep> findByPersonaId(Long personaId);
+
+    SignUpStep findByCodeAndStep(String code, Integer step);
 
 }

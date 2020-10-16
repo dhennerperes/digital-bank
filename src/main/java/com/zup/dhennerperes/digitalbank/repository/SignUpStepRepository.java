@@ -13,4 +13,7 @@ public interface SignUpStepRepository extends JpaRepository<SignUpStep, Long> {
     @Transactional(readOnly = true)
     Optional<SignUpStep> findByPersonaId(Long personaId);
 
+    @Transactional(readOnly = true)
+    Optional<SignUpStep> findByCodeAndStep(String code, Integer step);
+
 }

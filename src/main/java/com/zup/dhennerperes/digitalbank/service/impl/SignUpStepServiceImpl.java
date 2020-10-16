@@ -22,6 +22,11 @@ public class SignUpStepServiceImpl implements SignUpStepService {
     }
 
     @Override
+    public SignUpStep save(SignUpStep signUpStep) {
+        return this.signUpStepRepository.save(signUpStep);
+    }
+
+    @Override
     public SignUpStep save1(SignUpStep signUpStep) {
         if (this.findByPersonaId(signUpStep.getPersona().getId()).isPresent()) {
             throw exception(EntityType.SIGN_UP_STEP, ExceptionType.DUPLICATE_ENTITY, signUpStep.getCode());
@@ -32,6 +37,15 @@ public class SignUpStepServiceImpl implements SignUpStepService {
     @Override
     public Optional<SignUpStep> findByPersonaId(Long personaId) {
         return this.signUpStepRepository.findByPersonaId(personaId);
+    }
+
+    @Override
+    public SignUpStep findByCodeAndStep(String code, Integer step) {
+        Optional<SignUpStep> signUpStep = this.signUpStepRepository.findByCodeAndStep(code, step);
+        if (signUpStep.isPresent()) {
+            return signUpStep.get();
+        }
+        throw exception(EntityType.SIGN_UP_STEP, ExceptionType.ENTITY_NOT_FOUND, code);
     }
 
     private RuntimeException exception(EntityType entityType, ExceptionType exceptionType, String... args) {

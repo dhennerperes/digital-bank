@@ -4,6 +4,9 @@ import com.zup.dhennerperes.digitalbank.controller.v1.api.request.SignUp1Request
 import com.zup.dhennerperes.digitalbank.controller.v1.api.request.SignUp2Request;
 import com.zup.dhennerperes.digitalbank.dto.response.Response;
 import com.zup.dhennerperes.digitalbank.model.Persona;
+import com.zup.dhennerperes.digitalbank.model.PersonaAddress;
+import com.zup.dhennerperes.digitalbank.model.SignUpStep;
+import com.zup.dhennerperes.digitalbank.service.PersonaAddressService;
 import com.zup.dhennerperes.digitalbank.service.PersonaService;
 import com.zup.dhennerperes.digitalbank.service.SignUpStepService;
 import org.slf4j.Logger;
@@ -29,13 +32,16 @@ public class AuthenticationController {
     private static final Logger logger = LoggerFactory.getLogger(AuthenticationController.class);
 
     private final PersonaService personaService;
+    private final PersonaAddressService personaAddressService;
     private final SignUpStepService signUpStepService;
 
     @Autowired
     public AuthenticationController(
             PersonaService personaService,
+            PersonaAddressService personaAddressService,
             SignUpStepService signUpStepService) {
         this.personaService = personaService;
+        this.personaAddressService = personaAddressService;
         this.signUpStepService = signUpStepService;
     }
 
@@ -52,7 +58,7 @@ public class AuthenticationController {
         Persona personaSaved = this.personaService.save1(personaToBeAdded, this.signUpStepService);
         httpResponse.addHeader("Location", "api/v1/authentication/signup/2");
         httpResponse.addHeader("Code-Step", personaSaved.getCode());
-        return Response.ok().setData(personaToBeAdded);
+        return Response.ok();
     }
 
     @PostMapping(path = "/signup/2", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -64,10 +70,13 @@ public class AuthenticationController {
                 "neighborhood", signUp2Request.getNeighborhood(),
                 "complement", signUp2Request.getComplement(),
                 "city", signUp2Request.getCity(),
-                "state", signUp2Request.getState()));
-        signUp2Request.convertToEntity();
-        //TODO: save persona
+                "state", signUp2Request.getState(),
+                "code", signUp2Request.getCode()));
+        SignUpStep signUpStep = signUp2Request.checkCodeAndUpdate(this.signUpStepService);
+        PersonaAddress personaAddressToAdded = signUp2Request.convertToEntity();
+        PersonaAddress personaAddressSaved = this.personaAddressService.save2(personaAddressToAdded, signUpStep);
         httpResponse.addHeader("Location", "api/v1/authentication/signup/3");
+        httpResponse.addHeader("Code-Step", personaAddressSaved.getCode());
         return Response.ok();
     }
 

@@ -16,7 +16,7 @@ create TABLE IF NOT EXISTS `persona` (
 create TABLE IF NOT EXISTS `sign_up_step` (
   `id_sign_up_step` BIGINT(20) NOT NULL AUTO_INCREMENT,
   `code` VARCHAR(255) NULL DEFAULT NULL,
-  `step` VARCHAR(255) NULL DEFAULT NULL,
+  `step` INT(5) NOT NULL,
   `id_persona` BIGINT(20) NOT NULL,
   `date_created` DATETIME NULL DEFAULT NULL,
   `date_updated` DATETIME NULL DEFAULT NULL,

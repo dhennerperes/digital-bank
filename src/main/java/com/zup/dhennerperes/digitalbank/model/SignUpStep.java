@@ -31,7 +31,7 @@ public class SignUpStep extends Audit {
     private String code;
 
     @Column(name = "step", nullable = false)
-    private String step;
+    private Integer step;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "id_persona")

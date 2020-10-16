@@ -4,8 +4,11 @@ import com.zup.dhennerperes.digitalbank.controller.v1.api.request.SignUp1Request
 import com.zup.dhennerperes.digitalbank.controller.v1.api.request.SignUp2Request;
 import com.zup.dhennerperes.digitalbank.dto.response.Response;
 import com.zup.dhennerperes.digitalbank.model.Persona;
+import com.zup.dhennerperes.digitalbank.service.PersonaService;
+import com.zup.dhennerperes.digitalbank.service.SignUpStepService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,6 +28,17 @@ public class AuthenticationController {
 
     private static final Logger logger = LoggerFactory.getLogger(AuthenticationController.class);
 
+    private final PersonaService personaService;
+    private final SignUpStepService signUpStepService;
+
+    @Autowired
+    public AuthenticationController(
+            PersonaService personaService,
+            SignUpStepService signUpStepService) {
+        this.personaService = personaService;
+        this.signUpStepService = signUpStepService;
+    }
+
     @PostMapping(path = "/signup/1", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Response<?> signUp1(@Valid @RequestBody SignUp1Request signUp1Request, HttpServletResponse httpResponse) {
         logger.info(getOkLoggingMessage(
@@ -35,7 +49,7 @@ public class AuthenticationController {
                 "birth_date", signUp1Request.getBirth_date().toString(),
                 "cpf", signUp1Request.getCpf()));
         Persona personaToBeAdded = signUp1Request.convertToEntity();
-        //TODO: save persona
+        this.personaService.save1(personaToBeAdded, this.signUpStepService);
         httpResponse.addHeader("Location", "api/v1/authentication/signup/2");
         return Response.ok().setData(personaToBeAdded);
     }

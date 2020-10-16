@@ -20,7 +20,7 @@ public class Persona extends Audit {
     private static final long serialVersionUID = -4020106671035473812L;
 
     @Id
-    @Column(name = "id_city")
+    @Column(name = "id_persona")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

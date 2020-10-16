@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -34,7 +35,8 @@ public class PersonaServiceImpl implements PersonaService {
             throw exception(EntityType.PERSONA, ExceptionType.DUPLICATE_ENTITY, persona.getCpf());
         }
         Persona personaSaved = this.personaRepository.save(persona);
-        signUpStepService.save1(this.create(personaSaved));
+        SignUpStep signUpStep = signUpStepService.save1(this.create(personaSaved));
+        personaSaved.setCode(signUpStep.getCode());
         return personaSaved;
     }
 
@@ -43,6 +45,7 @@ public class PersonaServiceImpl implements PersonaService {
         signUpStep.setCode(CodeUtil.getShortUUID());
         signUpStep.setStep(1);
         signUpStep.setPersona(persona);
+        signUpStep.setDateCreated(LocalDateTime.now());
         return signUpStep;
     }
 

@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.time.LocalDate;
 
 @Entity
@@ -38,5 +39,8 @@ public class Persona extends Audit {
 
     @Column(name = "cpf", nullable = false)
     private String cpf;
+
+    @Transient
+    private String code;
 
 }

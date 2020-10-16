@@ -14,6 +14,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -49,6 +50,7 @@ public class SignUp1Request {
         persona.setEmail(this.email);
         persona.setBirthDate(this.birth_date);
         persona.setCpf(this.cpf);
+        persona.setDateCreated(LocalDateTime.now());
         return persona;
     }
 

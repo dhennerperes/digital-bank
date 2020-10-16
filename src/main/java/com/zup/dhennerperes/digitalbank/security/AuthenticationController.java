@@ -49,8 +49,9 @@ public class AuthenticationController {
                 "birth_date", signUp1Request.getBirth_date().toString(),
                 "cpf", signUp1Request.getCpf()));
         Persona personaToBeAdded = signUp1Request.convertToEntity();
-        this.personaService.save1(personaToBeAdded, this.signUpStepService);
+        Persona personaSaved = this.personaService.save1(personaToBeAdded, this.signUpStepService);
         httpResponse.addHeader("Location", "api/v1/authentication/signup/2");
+        httpResponse.addHeader("Code-Step", personaSaved.getCode());
         return Response.ok().setData(personaToBeAdded);
     }
 

@@ -31,7 +31,7 @@ public class SignUpStepServiceImpl implements SignUpStepService {
 
     @Override
     public Optional<SignUpStep> findByPersonaId(Long personaId) {
-        return Optional.empty();
+        return this.signUpStepRepository.findByPersonaId(personaId);
     }
 
     private RuntimeException exception(EntityType entityType, ExceptionType exceptionType, String... args) {

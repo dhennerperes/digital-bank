@@ -7,4 +7,6 @@ public interface PersonaAddressService {
 
     PersonaAddress save2(PersonaAddress personaAddress, SignUpStep signUpStep);
 
+    PersonaAddress findByPersonaId(Long personaId);
+
 }
